@@ -1,0 +1,38 @@
+; M5206eLITE memory map:
+; 
+;  0x00000000 - 0x003FFFFF	4M of ADRAMs
+;  0x10000000 - 0x100003FF	Internal Module registers
+;  0x20000000 - 0x20001FFF	Internal SDRAM (8K)
+;  0x30000000 - 0x300FFFFF	Extrneal FSRAM (1M == 256k * 32bits)
+;  0x40000000 - 0x4000FFFF	64K of GPIO
+;  0xFFE00000 - 0xFFEFFFFF	Flash EEPROM (1M == 512K * 16bits)
+;
+
+board		"LITE"
+
+; This should be 5206e, but we don't have emulation for that yet.
+cpu		"5206"
+
+; Default core register values
+reg		VBR=0x0
+reg		MBAR=0x10000000
+reg		RAMBAR=0x20000000
+reg		ROMBAR=0xFFE00000
+reg		PC=0xFFE00000
+reg		SP=0x00400000
+reg		SR=0x2000
+
+ram		name="adram", base=0x0, len=0x00400000
+
+timer_5206	name="timer1", base=MBAR+0x100, int=9
+timer_5206	name="timer2", base=MBAR+0x120, int=10
+uart_5206	name="uart1", base=MBAR+0x140, int=12
+uart_5206	name="uart2", base=MBAR+0x180, int=13, code=00
+sim_5206	name="sim", base=MBAR+0x0
+
+ram		name="sdram", base=RAMBAR+0x0, len=0x00002000
+ram		name="fsram", base=0x30000000, len=0x00100000
+ram		name="gpio", base=0x40000000, len=0x00010000
+rom		name="rom", base=ROMBAR+0x0, len=0x00100000, \
+				code=70004e4f
+

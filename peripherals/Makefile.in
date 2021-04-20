@@ -1,0 +1,14 @@
+
+TOPSRCDIR	= @top_srcdir@
+SUBDIRS		= 
+BUILD		= peripherals.o
+C_SRCS		= isa.c ram.c \
+			sim_5206.c timer_5206.c uart_5206.c \
+			sim_5307.c 
+
+@MAKEFILE_RULES@
+
+$(BUILD): $(OBJS)
+	$(LD_R) $(OBJS) -o $@
+
+

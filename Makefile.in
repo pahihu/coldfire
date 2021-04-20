@@ -1,0 +1,67 @@
+# Makefile.in, try not to edit :)
+
+VER_MAJOR = 0
+VER_MINOR = 3
+VER_BUILD = 1
+VERSION  = $(VER_MAJOR).$(VER_MINOR).$(VER_BUILD)
+NAME = coldfire-$(VERSION)
+
+TOPSRCDIR	= @top_srcdir@
+SUBDIRS		= tracer isa_a isa_b peripherals monitor
+SUBDIR_OBJS 	= tracer/tracer.o peripherals/peripherals.o monitor/monitor.o \
+			isa_a/i.o isa_b/i.o
+BUILD		= version.h coldfire
+
+C_SRCS=	addressing.c board.c cycle.c exception.c main.c memory.c handlers.c \
+	network.c i.c misc.c run.c sim.c 
+
+@MAKEFILE_RULES@
+
+OBJS+=@EXTRA_OBJS@
+	
+#Force version to be made before subdirectories
+subdirs-all: version.h
+
+coldfire: $(OBJS) force
+	$(CC) $(LDFLAGS) $(OBJS) $(SUBDIR_OBJS) -o $@ $(LIBS)
+	
+	
+install: coldfire
+	cp coldfire $(bindir)
+	chmod 755 $(bindir)/coldfire
+	mkdir -p $(datadir)/coldfire
+	cp boards/*.board $(datadir)/coldfire
+
+uninstall:
+	rm -f $(bindir)/coldfire
+	rm -rf $(datadir)/coldfire
+
+distclean:
+	rm -f coldfire version.h Makefile.rules 
+	rm -f config.cache config.log config.h config.status
+
+version.h:
+	@echo "Creating version.h"
+	@echo "#define COPYRIGHT \"Copyright 2000, by David Grant, and AUTHORS\"" > .ver
+	@echo "#define TITLE \"Coldfire CPU Emulator\"" >> .ver
+	@echo "#define VERSION \"$(VERSION)\"" >> .ver
+	@mv -f .ver version.h
+
+tar: distclean
+	cd .. \
+	&& cp -a coldfire $(NAME) \
+	&& rm -rf $(NAME)/CVS  $(NAME)/test \
+	&& tar -zcvf $(NAME).tar.gz $(NAME) \
+	&& rm -rf $(NAME)
+
+cvstar:
+	mkdir $(NAME) \
+	&& echo Checking out coldfire-$(VER_MAJOR)_$(VER_MINOR)_$(VER_BUILD) \
+	&& cvs export -d $(NAME) \
+		-r coldfire-$(VER_MAJOR)_$(VER_MINOR)_$(VER_BUILD) coldfire \
+	&& rm -rf $(NAME)/test \
+	&& rm -rf $(NAME)/CVS \
+	&& find $(NAME) -name .cvsignore -exec rm {} \; \
+	&& tar -zcvf $(NAME).tar.gz $(NAME) \
+	&& rm -rf $(NAME)
+

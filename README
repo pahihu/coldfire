@@ -1,0 +1,65 @@
+This README file contains the following information:
+
+1) History of Dave's Coldfire Emulator, now just "The Coldfire Emulator"
+	since I'm not the only author anymore :)
+2) Emulator requirements
+3) How to use dBug
+4) Where to get the latest version
+
+
+1) History of The Coldfire Emulator (written by Austin, editted slightly
+	by me.)
+-------------------------------------------------------------------------
+   The Coldfire Emulator is a Motorola Coldfire 5206 Emulator.  It's
+original beginnings date back to the fourth term (2nd year) of the
+University of Waterloo's Computer Engineering program (summer of 1999). 
+The Electrical and Computer Engineering (E&CE) 222 course - Digital 
+Computers - taught Motorola Coldfire 5206 assembly as an introduction to 
+machine assembly language.  Since the Computer Engineering class of 2002 is
+twice the size of previous classes, the demand for Coldfire boards was much
+greater than their availability.  (Also the fact that several classmates 
+apparently didn't understand "NO food or drinks in the labs" and kept getting
+the labs deadbolted on us didn't help).  Thus, David Grant began his emulator
+project to work on labs without requiring the actual hardware boards.
+Although the emulator progressed far enough to be used for the first three
+labs, interrupts were not yet implemented so the real boards were used for
+the final assignment.  The next term featured the course E&CE 354 - Real-Time 
+Operating Systems - where a project involved writing a real-time executive 
+(RTX) for the Motorola Coldfire 5206 platform. (Insert same problems with
+availability and stupid classmates here). So, the emulator was dusted off
+and developed in parallel with the RTX.
+
+   Special thanks to Austin, Kris, and Tennille (in order of 
+alphabeticalness) for putting up with me sometimes developing the emulator
+over our project :)
+
+   In March, 2000, Dave released his emulator to the general public under
+the GPL, in the hope that it will be useful to other people... In particular
+to the E&CE department, and potentially save many future generations of
+electrical and computer engineers from stuffy overcrowded Coldfire labs. :)
+
+   The emulator currently features all but 5 assembly instructions, a full
+dBug (rip off of Motorola's dBUG) with extra functionality, both serial
+ports, the parallel port, interrupts (through telnet sessions), full
+exception handling, timers and timer interrupts, and full tracing capability.
+
+2) Emulator Requirements 
+-------------------------------------------------------------------------
+   Well, it used to need PThreads, but it doesn't anymore.
+   It builds nicely on just about every Linux flavour I've come across. 
+   It build on Windows using the Cygwin compiler.
+
+
+3) How To Use dBug
+-------------------------------------------------------------------------
+Fire up the Coldfire and type 'help'.  :)
+
+4) Where To Get The Latest Version
+-------------------------------------------------------------------------
+http://www.slicer.ca/coldfire/
+
+Have fun with it...
+
+   dave.
+--
+dave@slicer.ca

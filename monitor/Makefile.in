@@ -1,0 +1,14 @@
+
+TOPSRCDIR	= @top_srcdir@
+SUBDIRS		= 
+BUILD		= monitor.o
+C_SRCS		= br.c cfrm.c de.c di.c dl.c dn.c go.c help.c main.c \
+			md.c mm.c quit.c rd.c reset.c rm.c \
+			set.c ss.c time.c trace.c tracer.c
+
+@MAKEFILE_RULES@
+
+$(BUILD): $(OBJS)
+	$(LD_R) $(OBJS) -o $@
+
+

@@ -1,0 +1,62 @@
+/**********************************/
+/*                                */
+/*  Copyright 2000, David Grant   */
+/*                                */
+/*  see LICENSE for more details  */
+/*                                */
+/**********************************/
+
+s32 add_5206_register(void);
+s32 adda_5206_register(void);
+s32 addi_5206_register(void);
+s32 addq_5206_register(void);
+s32 addx_5206_register(void);
+s32 and_5206_register(void);
+s32 andi_5206_register(void);
+s32 asx_5206_register(void);
+s32 bcc_5206_register(void);
+s32 btst_5206_register(void);
+s32 clr_5206_register(void);
+s32 cmp_5206_register(void);
+s32 cmpa_5206_register(void);
+s32 cmpi_5206_register(void);
+s32 dc_5206_register(void);
+s32 div_5206e_register(void);
+s32 eor_5206_register(void);
+s32 eori_5206_register(void);
+s32 ext_5206_register(void);
+s32 halt_5206_register(void);
+s32 illegal_5206_register(void);
+s32 jmp_5206_register(void);
+s32 jsr_5206_register(void);
+s32 lea_5206_register(void);
+s32 link_5206_register(void);
+s32 lsx_5206_register(void);
+s32 move_5206_register(void);
+s32 movec_5206_register(void);
+s32 movem_5206_register(void);
+s32 moveq_5206_register(void);
+s32 movexr_5206_register(void);
+s32 mulu_l_5206_register(void);
+s32 mul_w_5206_register(void);
+s32 neg_5206_register(void);
+s32 negx_5206_register(void);
+s32 nop_5206_register(void);
+s32 not_5206_register(void);
+s32 or_5206_register(void);
+s32 ori_5206_register(void);
+s32 pea_5206_register(void);
+s32 rte_5206_register(void);
+s32 rts_5206_register(void);
+s32 scc_5206_register(void);
+s32 stop_5206_register(void);
+s32 sub_5206_register(void);
+s32 suba_5206_register(void);
+s32 subi_5206_register(void);
+s32 subq_5206_register(void);
+s32 subx_5206_register(void);
+s32 swap_5206_register(void);
+s32 trap_5206_register(void);
+s32 trapf_5206_register(void);
+s32 tst_5206_register(void);
+s32 unlk_5206_register(void);

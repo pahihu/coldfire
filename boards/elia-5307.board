@@ -1,0 +1,56 @@
+; eLIA 5307 board 	- Rodney Davies Rodneygd@uow.edu.au
+; 			- David Grant
+;The ColdFire memory space is set up as follows
+;
+;  ADDRESS                  HARDWARE            COMMENT
+;
+;  00000000 - 00ffffff      SDRAM               16MB, 32bits, Bank0
+;  01000000 - 01ffffff      SDRAM (optional)    16MB, 32bits, Bank1
+;  10000000 - 100fffff      ColdFire SIM        Internal to CPU
+;  20000000 - 20000fff      ColdFire SRAM       Internal 4k SRAM CPU
+;  30600000 - 307fffff      Ethernet            CS3, 16bit, SMC91c96
+;  30c00000 - 30cfffff      IDE Interface       CS6, 16bit
+;  80000000 - 801fffff      PCI bridge          CS1, 32bit, CO-MEM Lite
+;  f0000000 - f01fffff      FLASH               CS0, 16bit, 1MB (or 2MB)
+
+; Board ID
+board	"eLIA"
+
+; The CPU we want to use
+cpu	"5307"
+
+; Reset values for internal registers
+reg	PC=0xf0000000		; start the PC executing out of the flash
+reg	SP=0x01000000		; SP at end of SDRAM
+reg	RAMBAR=0x20000000 	; sram usually.
+reg	ROMBAR=0xf0000000	; a.k.a the flash.
+reg	VBR=0x00000000		; vbr, in normal ram?
+reg	MBAR=0x10000000		; this is the SIM
+reg	SR=0x2700		
+
+; SDRAM is most likely to be accessed (16Mb) 2 banks of it, 2nd one optional.
+ram     name="sdram0", base=0x00000000, len=0x01000000
+;ram	name="sdram1", base=0x01000000, len=0x01000000
+
+; Then the SIM, the sim_init initializes the entire sim region, 
+;  so the timer and uart need to go first else we'll never send 
+;  read/writes into them 
+; We also don't need the lengths, the modules know how long they are
+; The 5307 uses the same hardware modules ast he 5206 for the timer and uart
+timer_5206	name="timer0", base=MBAR+0x140, int=9
+timer_5206	name="timer1", base=MBAR+0x180, int=10
+; uart0 is the default uart (so we signal that with the code=00),
+; different than the 5206 boards where the second uart is the default one.
+uart_5206	name="uart0", base=MBAR+0x1c0, int=12, code=00
+uart_5206	name="uart1", base=MBAR+0x200, int=13
+sim_5307	name="sim", base=MBAR+0x0
+
+; Least likely to be accessed
+dummy	name=smc91c96, base=0x30600000, len=0x00200000
+dummy 	name=isa, base=0x30c00000, len=0x00100000
+dummy 	name=pci, base=0x80000000, len=0x00200000
+
+; rom gets pre-loaded with return to monitor code.
+rom	name=flash, base=ROMBAR+0x0, len=0x00040000, code=70004e4f
+ram	name=sram, base=RAMBAR+0x0, len=0x00001000
+

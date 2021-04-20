@@ -1,0 +1,51 @@
+; CJDesign 5307 board.  Designed for the university of waterloo
+
+; memory map:
+;  $00000000 - $0FFFFFFF Flash
+;  $10000000 - $1FFFFFFF SDRam
+;  $20000000 - $3FFFFFFF Peripheral Space
+;  $40000000 - $FFFF7FFF Unused
+;  $FFFF8000 - $FFFFFFFF Internal SRAM
+; however, the rom on the board uses 0xf000000 as the peripheral 
+;  space, so we'll configure the MBAR to be that
+
+; Board ID
+board		"CJDesign"
+
+; The CPU we want to use 
+cpu		"5307"
+
+; Reset values for internal registers
+reg		PC=0x0
+reg		SP=0x11000000
+reg		RAMBAR=0xFFFF8000
+reg		ROMBAR=0x0
+reg		VBR=0x10000000
+reg		MBAR=0xf0000000
+reg		SR=0x2000
+
+; DRAM is most likely to be accessed (16Mb)
+ram		name="dram", base=0x10000000, len=0x01000000
+
+; Then the SIM, the sim_init initializes the entire sim region, 
+;  so the timer and uart need to go first else we'll never send 
+;  read/writes into them 
+; We also don't need the lengths, the modules know how long they are
+timer_5206	name="timer0", base=MBAR+0x140, int=9
+timer_5206	name="timer1", base=MBAR+0x180, int=10
+; uart0 is the default uart, different than the 5206 boards where
+;  the second uart is the default one.
+uart_5206	name="uart0", base=MBAR+0x1c0, int=12, code=00
+uart_5206	name="uart1", base=MBAR+0x200, int=13
+sim_5307	name="sim", base=MBAR+0x0
+
+; Least likely to be accessed
+;dummy		name=ne2000, base=0x40000300, len=0x0100
+;dummy		name=isa, base=0x40000000, len=0x00100000
+
+; rom gets pre-loaded with return to monitor code.
+rom		name=flash, base=ROMBAR+0x0, len=0x00040000, \
+			code=70004e4f
+ram 		name=sram, base=RAMBAR+0x0, len=0x00008000
+
+

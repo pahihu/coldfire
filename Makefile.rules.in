@@ -1,0 +1,42 @@
+CC	= @CC@
+CFLAGS	= -Wall -fomit-frame-pointer @CFLAGS@ -I$(TOPSRCDIR)
+LIBS	= @LIBS@
+LD_R	= ld -r
+RM	= rm -f
+LDFLAGS = 
+
+
+prefix          = @prefix@
+exec_prefix     = @exec_prefix@
+bindir          = @bindir@
+libdir          = @libdir@
+infodir         = @infodir@
+mandir          = @mandir@
+datadir		= @datadir@
+
+
+OBJS = $(C_SRCS:.c=.o)
+
+all: subdirs-all $(BUILD)
+
+.c.o:
+	$(CC) $(CFLAGS) -c $<
+
+subdirs-%: force
+	set -e; s='$(SUBDIRS)'; for i in $$s; do cd $$i && $(MAKE) $* && cd ..; done;
+
+install: subdirs-install
+uninstall: subdirs-uninstall
+clean: subdirs-clean clean-default
+distclean: subdirs-distclean distclean-default
+
+clean-default:
+	$(RM) $(OBJS) $(BUILD) 
+
+distclean-default:
+	$(RM) $(OBJS) $(BUILD) Makefile
+	
+
+force: ;
+
+

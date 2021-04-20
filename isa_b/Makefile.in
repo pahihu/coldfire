@@ -1,0 +1,13 @@
+
+TOPSRCDIR	= @top_srcdir@
+SUBDIRS		= 
+BUILD		= i.o
+C_SRCS		= bcc.c cmp.c
+
+@MAKEFILE_RULES@
+
+$(BUILD): $(OBJS)
+	$(LD_R) $(OBJS) -o $@
+
+
+

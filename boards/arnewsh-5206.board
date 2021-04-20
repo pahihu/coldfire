@@ -1,0 +1,43 @@
+; Arnewsh memory map:
+;  $00000000 - $01FFFFFF DRAM
+;  $10000000 - $100003FF Internal module registers
+;  $20000000 - $200001FF Internal SRAM
+;  $30000000 - $300FFFFF 1Meg space for MC68HC901
+;  $40000000 - $400FFFFF 1Meg ISA bus area
+;  $FFE00000 - $FFE3FFFF 256K flash rom
+
+; Board ID
+board		"Arnewsh"
+
+; The CPU we want to use 
+cpu		"5206"
+
+; Default core register values
+reg		VBR=0x0
+reg		MBAR=0x10000000
+reg		RAMBAR=0x20000000
+reg		ROMBAR=0xFFE00000
+reg		PC=0xFFE00000
+reg		SP=0x00400000
+reg		SR=0x2000
+
+; DRAM is most likely to be accessed
+ram		name="dram", base=0x0, len=0x00800000
+
+; Then the SIM, the sim_init initializes the entire sim region, 
+;  so the timer and uart need to go first else we'll never send 
+;  read/writes into them 
+; We also don't need the lengths, the modules know how long they are
+timer_5206	name="timer1", base=MBAR+0x100, int=9
+timer_5206	name="timer2", base=MBAR+0x120, int=10
+uart_5206	name="uart1", base=MBAR+0x140, int=12
+uart_5206	name="uart2", base=MBAR+0x180, int=13, code=00
+sim_5206	name="sim", base=MBAR+0x0
+
+; Least likely to be accessed
+dummy		name=ne2000, base=0x40000300, len=0x0100
+dummy		name=isa, base=0x40000000, len=0x00100000
+rom		name=rom, base=ROMBAR+0x0, len=0x00040000, \
+			code=70004e4f
+ram 		name=sram, base=RAMBAR+0x0, len=0x00000100
+

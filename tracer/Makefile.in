@@ -1,0 +1,20 @@
+
+TOPSRCDIR	= @top_srcdir@
+SUBDIRS		= 
+BUILD		= tracer.o
+C_SRCS		= main.c
+
+@MAKEFILE_RULES@
+
+generated.channels.h:
+	./mktracech.sh ..
+
+distclean:
+	$(RM) generated.channels.h
+
+$(BUILD): generated.channels.h $(OBJS)
+	$(LD_R) $(OBJS) -o $@
+
+# Deps
+tracer.o: generated.channels.h main.c tracer.h 
+

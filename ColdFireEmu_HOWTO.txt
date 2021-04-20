@@ -1,0 +1,24 @@
+Quick Coldfire Emulator HOWTO
+=============================
+
+download the emulator first, and untar it. Also download an image for the 5206 from the uClinux download page, and ungzip it. Then cd into coldfire-0.1.5 and:
+
+./configure
+make
+
+Run the emulator:
+./coldfire
+
+Connect 2 telnet clients to it (one for each serial ports the coldfire supports):
+telnet localhost 5206
+telnet localhost 5207
+
+Go back to the emulator window and download the uClinux binary:
+dBUG> dl /path/to/image-an5206-big-20000706.bin
+
+Start it up:
+dBUG> go 10000
+
+Watch serial port 1 (telnet localhost 5206) for output. It will hang on calibrating the delay loop for a while.. that's normal.. don't panic. run with:
+./coldfire --timerhack 
+to speed up the timer.

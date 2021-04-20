@@ -1,0 +1,17 @@
+Hacking Notes:
+
+- Memory_Retr (and Memory_Retr*) DO NOT do any sign extension.
+   8 bit read on FFFFFFFF returns 000000FF.
+   
+- EA_GetValue does do sign extenstion.
+   8 bit read on xxxxxxF0 returns FFFFFFF0.
+   
+- Any jump address in the VBR that is FFFFFFFF (ie, way up in ROM on the real
+   coldfire).. will be passed to Monitor_HandleException(Vector).  This 
+   includes things like the TRACE exception (#9).  So yes, you can override
+   any exception handler (just like in the real thing).
+
+- Our dBug (a dBUG clone) runs completely on exceptions.. the only way to get
+   into dBug is through an exception.
+
+
